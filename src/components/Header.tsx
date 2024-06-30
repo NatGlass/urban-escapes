@@ -7,13 +7,15 @@ import {
   Button,
   Container,
   IconButton,
+  Skeleton,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useState } from "react";
 import MobileNavDrawer from "./Drawer";
+import LoginButton from "./auth/LoginButton";
+import LogoutButton from "./auth/LogoutButton";
 
 const navItems = [
   {
@@ -87,11 +89,12 @@ function Header() {
               </Box>
             )} */}
 
-            {user && <Button color="inherit">user {user.name}</Button>}
-            {!user && session.status !== "loading" && (
-              <Button component={Link} href="/api/auth/signin" color="inherit">
-                Login
-              </Button>
+            {session.status === "loading" ? (
+              <Skeleton variant="rectangular" width={150} height={30} />
+            ) : user ? (
+                <LogoutButton />
+            ) : (
+              <LoginButton />
             )}
 
             <Box sx={{ display: { xs: "block", md: "none" } }}>
